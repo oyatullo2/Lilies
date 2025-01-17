@@ -6,6 +6,7 @@ export const Home = () => {
   const [foodShow, setFoodShow] = useState(false);
   const [count, setCount] = useState(0);
   const { counts, setCounts } = useContext(MainProvider);
+  const { sideBarMode, setSideBarMode } = useContext(MainProvider);
 
   const handleShow = (e) => {
     if (foodShow === false && e.target.id !== "plus") {
@@ -32,9 +33,23 @@ export const Home = () => {
   const handlePlus = () => {
     setCounts(counts + 1);
   };
+
+  const handleShowSidebar = () => {
+    if (sideBarMode === false) {
+      setSideBarMode(true);
+    }
+    if (sideBarMode === true) {
+      setSideBarMode(false);
+    }
+  };
+  console.log(sideBarMode);
   return (
     <>
-      <div className="w-full animate-[HomeRightAnimation_1s_ease-out] transition-all duration-150 ease-in-out overflow-x-hidden h-screen max-h-full flex">
+      <div className="w-full relative animate-[HomeRightAnimation_1s_ease-out] transition-all duration-150 ease-in-out overflow-x-hidden h-screen max-h-full flex">
+        <i
+          onClick={handleShowSidebar}
+          className="fa-solid fa-calendar text-[#00302E] absolute top-2 cursor-pointer hover:bg-black p-[5px] rounded-md text-[20px] transition-all duration-500 ease-in-out hover:text-white left-2"
+        ></i>
         <div className="flex flex-col w-full">
           <div className="w-full mb-[50px]  mt-[70px] ml-[68px] items-center mx-auto justify-between flex">
             <div className="flex flex-col justify-start">
@@ -46,16 +61,16 @@ export const Home = () => {
               </p>
             </div>
             <img
-              className="flex mt-[10px] mr-[142px] items-center justify-center object-fill w-full max-w-[50px] h-full max-h-[50px]"
+              className="flex mt-[10px]  items-center justify-center object-fill w-full max-w-[50px] h-full max-h-[50px]"
               src="/40w 1 (1).svg"
               alt=""
             />
           </div>
           <div
             onClick={handleShow}
-            className="flex mb-[10px] overflow-y-scroll mx-auto justify-evenly w-full flex-wrap"
+            className="flex mb-[10px] gap-[20px] overflow-y-scroll mx-auto justify-evenly w-full flex-wrap"
           >
-            <div className="w-full mr-[118px] mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col">
+            <div className="w-full  mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col">
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
                 src="/bon-vivant-qom5MPOER-I-unsplash 4.svg"
@@ -85,7 +100,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px] mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full  mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -147,7 +162,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px] mb-[68px]  shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full  mb-[68px]  shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -178,7 +193,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mb-[68px] mr-[118px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full mb-[68px]  shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -240,7 +255,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px] mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full  mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -271,7 +286,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px] mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full  mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -333,7 +348,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mb-[68px] mr-[118px]  shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full mb-[68px]   shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -364,7 +379,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mb-[68px] mr-[118px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full mb-[68px]  shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -426,7 +441,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px] mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full  mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -457,7 +472,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px] mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full  mb-[68px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -519,7 +534,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px]  shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full   shadow-md hover:shadow-xl max-h-fit transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -550,7 +565,7 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full mr-[118px] shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full  shadow-md hover:shadow-xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-h-fit max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -581,7 +596,69 @@ export const Home = () => {
             </div>
             <div
               onClick={handleShow}
-              className="w-full shadow-md hover:shadow-2xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+              className="w-full max-h-fit shadow-md hover:shadow-2xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+            >
+              <img
+                className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
+                src="/bon-vivant-qom5MPOER-I-unsplash 10.svg"
+                alt=""
+              />
+              <p className="text-[#00302E] mb-[4px] text-[17px] font-[600]">
+                Stir Fry Pasta
+              </p>
+              <p className="text-[#000000B0] text-[12px] font-[500] max-w-[172px] text-center mb-[22px]">
+                The in-house pasta and checken by chef Mouse
+              </p>
+              <div className="flex justify-between w-full px-[29px]">
+                <p className="text-[#00302E] text-[13px] font-[700]">
+                  N 1,000.00
+                </p>
+                <p
+                  id="plus"
+                  onClick={() => {
+                    handlePlus();
+                    handleShow();
+                  }}
+                  className="text-[#06E775] text-[13px] font-[600] mb-[23px] cursor-pointer hover:shadow-md transition-all duration-150 ease-in-out"
+                >
+                  Add to cart
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={handleShow}
+              className="w-full max-h-fit shadow-md hover:shadow-2xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
+            >
+              <img
+                className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
+                src="/bon-vivant-qom5MPOER-I-unsplash 10.svg"
+                alt=""
+              />
+              <p className="text-[#00302E] mb-[4px] text-[17px] font-[600]">
+                Stir Fry Pasta
+              </p>
+              <p className="text-[#000000B0] text-[12px] font-[500] max-w-[172px] text-center mb-[22px]">
+                The in-house pasta and checken by chef Mouse
+              </p>
+              <div className="flex justify-between w-full px-[29px]">
+                <p className="text-[#00302E] text-[13px] font-[700]">
+                  N 1,000.00
+                </p>
+                <p
+                  id="plus"
+                  onClick={() => {
+                    handlePlus();
+                    handleShow();
+                  }}
+                  className="text-[#06E775] text-[13px] font-[600] mb-[23px] cursor-pointer hover:shadow-md transition-all duration-150 ease-in-out"
+                >
+                  Add to cart
+                </p>
+              </div>
+            </div>
+            <div
+              onClick={handleShow}
+              className="w-full max-h-fit shadow-md hover:shadow-2xl transition-all duration-500 ease-in-out active:shadow-inner border-[1px] border-[#00302E24] rounded-[5px] max-w-[240px] flex justify-center items-center flex-col"
             >
               <img
                 className="w-[90px] mt-[35px] h-[90px] mb-[13px]"
@@ -667,7 +744,10 @@ export const Home = () => {
                 </button>
               </div>
               <button
-              onClick={() => {setCount(0);setFoodShow(false)}}
+                onClick={() => {
+                  setCount(0);
+                  setFoodShow(false);
+                }}
                 className="bg-[#00302E] text-[#FFFFFF] text-[17px] font-[700] py-[16px] w-full max-w-[150px]"
               >
                 Add to cart
@@ -677,7 +757,7 @@ export const Home = () => {
         </div>
       </div>
       <Cart />
-      <Order/>
+      <Order />
     </>
   );
 };

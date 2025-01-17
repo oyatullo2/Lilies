@@ -1,5 +1,20 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { MainProvider } from "../../Context/GlobaState";
 export const Foods = () => {
+  const { mode, setMode } = useContext(MainProvider);
+
+  const handleMode = () => {
+    const modeColor = localStorage.getItem("Mode");
+    if (mode === "dark") {
+      setMode(modeColor);
+      localStorage.setItem("Mode", "light");
+    }
+    if (mode === "light") {
+      setMode(modeColor);
+      localStorage.setItem("Mode", "dark");
+    }
+  };
   return (
     <>
       <div className="flex flex-col w-full  bg-[#00302E]">
@@ -10,6 +25,16 @@ export const Foods = () => {
               <p className="font-[700] text-[32px] text-[#FFFFFF]">Lilies</p>
             </div>
             <div className="flex items-center justify-center">
+              <div
+                onClick={handleMode}
+                className="w-[25px] shadow-md shadow-white flex justify-center items-center h-[25px] bg-transparent rounded-full mr-[20px]"
+              >
+                {mode === "light" ? (
+                  <i className="fa-solid fa-moon"></i>
+                ) : (
+                  <i className="fa-solid fa-sun"></i>
+                )}
+              </div>
               <p className="font-[500] text-[21px] text-[#FBDDBB] mr-[45px] cursor-pointer">
                 Home
               </p>
