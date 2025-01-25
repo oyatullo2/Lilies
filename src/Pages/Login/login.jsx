@@ -1,19 +1,38 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import api from "../../Server/api";
 export const Login = () => {
+  const [value, setValue] = useState({
+    email: "",
+    password: "",
+  });
   const [show, setShow] = useState(false);
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
   const [type, setType] = useState("password");
-  const [error, setError] = useState(false);
-  const [errorMassage, setErrorMassage] = useState("");
   const navigate = useNavigate("");
+
+  const handleRequest = async () => {
+    try {
+      const res = await api.post("./sign-in", value);
+      localStorage.setItem("token", res.data.token);
+      if(res.data.success === true){
+        navigate("/home")
+      }
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleValue = (e) => {
+    const { name, value: inputValue } = e.target;
+    setValue({ ...value, [name]: inputValue });
+  };
   const handleShow = () => {
-    if (show === false) {
+    if (type === "password") {
       setType("text");
       setShow(true);
-    } else {
+    }
+    if (type === "text") {
       setType("password");
       setShow(false);
     }
@@ -21,40 +40,14 @@ export const Login = () => {
 
   const handleLogin = () => {
     if (
-      email.length >= 11 &&
-      email.endsWith("@gmail.com") &&
-      password.length >= 6
+      value.email.length >= 11 &&
+      value.email.includes("@") &&
+      value.password.length !== ""
     ) {
-      setEmail("");
-      setPassword("");
-      navigate("/home");
+      handleRequest();
+      setValue("");
+      setValue("");
       localStorage.setItem("token", "true");
-    } else {
-      setError(true);
-      if (
-        email.length < 11 &&
-        email.endsWith("@gmail.com") &&
-        password.length >= 6
-      ) {
-        setErrorMassage("Email is not valid ❗");
-      }
-      if (
-        email.length >= 11 &&
-        !email.endsWith("@gmail.com") &&
-        password.length >= 6
-      ) {
-        setErrorMassage("Email is not valid ❗");
-      }
-      if (
-        email.length >= 11 &&
-        email.endsWith("@gmail.com") &&
-        password.length < 6
-      ) {
-        setErrorMassage("Password is not valid ❗");
-      }
-      if (email.length < 11 && password.length < 6) {
-        setErrorMassage("Inputs is not valid ❗");
-      }
     }
   };
   const handleEnter = (e) => {
@@ -74,8 +67,9 @@ export const Login = () => {
             <input
               type="text"
               onKeyDown={handleEnter}
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={handleValue}
+              name="email"
+              value={value.email}
               placeholder="Your Email address"
               className="bg-transparent outline-none font-[600] text-[#00302E] border-[#FBDDBB82] border-[2px] rounded-[5px] py-[19px] w-full max-w-[488px] mx-auto px-[25px] placeholder:text-[#00302E87] placeholder:text-[14px] placeholder:font-[400] "
             />
@@ -84,15 +78,18 @@ export const Login = () => {
                 type={type}
                 onKeyDown={handleEnter}
                 placeholder="Your Password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                onChange={handleValue}
+                value={value.password}
+                name="password"
                 className="bg-transparent outline-none border-[#FBDDBB82] border-[2px] rounded-[5px] py-[19px] w-full max-w-[488px] mx-auto pl-[25px] pr-[45px] placeholder:text-[#00302E87] placeholder:text-[14px] placeholder:font-[400] text-[#00302E] font-[600]"
               />
               <p
                 onClick={handleShow}
                 className="text-[#00302E] font-[600] cursor-pointer text-[14px] right-[10px] absolute"
               >
-                {show !== false && password.length !== 0 ? "hide" : "show"}
+                {show !== false && value.password.length !== 0
+                  ? "hide"
+                  : "show"}
               </p>
             </div>
             <button
@@ -110,24 +107,6 @@ export const Login = () => {
             </Link>
             <p className="text-[#00302EE8] font-[500] text-[14px]">
               Forgot Password
-            </p>
-          </div>
-        </div>
-      </div>
-      <div
-        style={{ display: error ? "block" : "none" }}
-        className="w-full h-screen max-h-full bg-black/50 z-[-5px] absolute top-0"
-      >
-        <div className="w-full h-screen flex justify-center items-center">
-          <div className="bg-white relative w-full flex justify-center items-center rounded-[5px] max-w-[400px] mx-auto py-[20px]">
-            <p className="text-[#00302E] font-[500] text-[18px]">
-              {errorMassage}
-            </p>
-            <p
-              className="absolute right-[10px] font-[700] text-[17px] text-red-600 top-[1px] cursor-pointer"
-              onClick={() => setError(false)}
-            >
-              x
             </p>
           </div>
         </div>

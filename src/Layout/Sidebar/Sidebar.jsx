@@ -1,15 +1,13 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { MainProvider } from "../../Context/GlobaState";
-
+import { Link, useLocation } from "react-router-dom";
 export const Sidebar = () => {
-  const [selectItem, setSelectItem] = useState("Dashboard");
   const { setCloseOrder } = useContext(MainProvider);
   const { counts } = useContext(MainProvider);
   const { setCloseCart } = useContext(MainProvider);
+  const local = useLocation();
 
-  const handleSelect = (item) => {
-    setSelectItem(item);
-  };
+  const isActive = (path) => local.pathname === path;
 
   return (
     <>
@@ -19,86 +17,100 @@ export const Sidebar = () => {
           <p className="font-[700] text-[33px] text-[#00302E]">Lilies</p>
         </div>
         <div className="w-full flex ml-[25px] flex-col">
-          <div
-            style={{
-              backgroundColor: selectItem === "Dashboard" ? "#EFEFEF" : "",
-            }}
-            onClick={() => handleSelect("Dashboard")}
-            className="flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] w-full justify-start py-[15px] items-start gap-[16px]"
-          >
-            <i
+          <Link to={"/home"}>
+            <div
               style={{
-                color: selectItem === "Dashboard" ? "black" : "#BCBCBC",
+                backgroundColor: isActive("/home") ? "#EFEFEF" : "",
               }}
-              className="transition-all duration-150 ease-in-out fa-solid fa-house text-[#BCBCBC] text-[20px]"
-            ></i>
-            <p
+              className="flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] w-full justify-start py-[15px] items-start gap-[16px]"
+            >
+              <i
+                style={{
+                  color: isActive("/home") ? "black" : "#BCBCBC",
+                }}
+                className="transition-all duration-150 ease-in-out fa-solid fa-house text-[#BCBCBC] text-[20px]"
+              ></i>
+              <p
+                style={{
+                  color: isActive("/home") ? "black" : "#BCBCBC",
+                }}
+                className="transition-all duration-150 ease-in-out text-[#BCBCBC] font-[500] text-[17px]"
+              >
+                Dashboard
+              </p>
+            </div>
+          </Link>
+          <Link to={"/profile"}>
+            <div
               style={{
-                color: selectItem === "Dashboard" ? "black" : "#BCBCBC",
+                backgroundColor: isActive("/profile") ? "#EFEFEF" : "",
               }}
-              className="transition-all duration-150 ease-in-out text-[#BCBCBC] font-[500] text-[17px]"
+              className="w-full flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] justify-start items-center py-[15px] gap-[16px]"
             >
-              Dashboard
-            </p>
-          </div>
-          <div
-            style={{
-              backgroundColor: selectItem === "Profile" ? "#EFEFEF" : "",
-            }}
-            onClick={() => handleSelect("Profile")}
-            className="w-full flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] justify-start items-center py-[15px] gap-[16px]"
-          >
-            <i
-              style={{ color: selectItem === "Profile" ? "black" : "#BCBCBC" }}
-              className="transition-all duration-150 ease-in-out fa-solid fa-user text-[#BCBCBC] text-[20px]"
-            ></i>
-            <p
-              style={{ color: selectItem === "Profile" ? "black" : "#BCBCBC" }}
-              className="transition-all duration-150 ease-in-out text-[#BCBCBC] font-[500] text-[17px] "
+              <i
+                style={{
+                  color: isActive("/profile") ? "black" : "#BCBCBC",
+                }}
+                className="transition-all duration-150 ease-in-out fa-solid fa-user text-[#BCBCBC] text-[20px]"
+              ></i>
+              <p
+                style={{
+                  color: isActive("/profile") ? "black" : "#BCBCBC",
+                }}
+                className="transition-all duration-150 ease-in-out text-[#BCBCBC] font-[500] text-[17px] "
+              >
+                Your profile
+              </p>
+            </div>
+          </Link>
+          <Link to={"/order"}>
+            <div
+              style={{
+                backgroundColor: isActive("/order") ? "#EFEFEF" : "",
+              }}
+              className="w-full flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] justify-start items-center py-[15px] gap-[16px]"
             >
-              Your profile
-            </p>
-          </div>
-          <div
-            style={{ backgroundColor: selectItem === "Order" ? "#EFEFEF" : "" }}
-            onClick={() => handleSelect("Order")}
-            className="w-full flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] justify-start items-center py-[15px] gap-[16px]"
-          >
-            <i
-              style={{ color: selectItem === "Order" ? "black" : "#BCBCBC" }}
-              className=" transition-all duration-150 ease-in-out fa-solid fa-calendar text-[#BCBCBC] text-[20px]"
-              onClick={() => setCloseCart(true)}
-            ></i>
-            <p
-              style={{ color: selectItem === "Order" ? "black" : "#BCBCBC" }}
-              className="relative w-full transition-all duration-150 ease-in-out text-[#BCBCBC] font-[500] text-[17px]"
-              onClick={() => setCloseCart(true)}
+              <i
+                style={{ color: isActive("/order") ? "black" : "#BCBCBC" }}
+                className=" transition-all duration-150 ease-in-out fa-solid fa-calendar text-[#BCBCBC] text-[20px]"
+                onClick={() => setCloseCart(true)}
+              ></i>
+              <p
+                style={{ color: isActive("/order") ? "black" : "#BCBCBC" }}
+                className="relative w-full transition-all duration-150 ease-in-out text-[#BCBCBC] font-[500] text-[17px]"
+                onClick={() => setCloseCart(true)}
+              >
+                Orders
+                <span className="absolute top-0 right-4 w-[24px] rounded-[5px] h-[24px] bg-[#06E775] flex items-center justify-center text-[#000000] font-[600]">
+                  6
+                </span>
+              </p>
+            </div>
+          </Link>
+          <Link to={"/cart"}>
+            <div
+              style={{
+                backgroundColor: isActive("/cart") ? "#EFEFEF" : "",
+              }}
+              className="w-full flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] justify-start items-center py-[15px] gap-[16px]"
             >
-              Orders
-              <span className="absolute top-0 right-4 w-[24px] rounded-[5px] h-[24px] bg-[#06E775] flex items-center justify-center text-[#000000] font-[600]">6</span>
-            </p>
-          </div>
-          <div
-            style={{ backgroundColor: selectItem === "Cart" ? "#EFEFEF" : "" }}
-            onClick={() => handleSelect("Cart")}
-            className="w-full flex cursor-pointer transition-all duration-150 ease-in-out pl-[15px] rounded-[12px] max-w-[267px] justify-start items-center py-[15px] gap-[16px]"
-          >
-            <i
-              style={{ color: selectItem === "Cart" ? "black" : "#BCBCBC" }}
-              onChange={() => setCloseOrder(true)}
-              className=" transition-all duration-150 ease-in-out fa-solid fa-bookmark text-[#BCBCBC] text-[20px]"
-            ></i>
-            <p
-              style={{ color: selectItem === "Cart" ? "black" : "#BCBCBC" }}
-              className=" transition-all w-full duration-150 relative ease-in-out text-[#BCBCBC] font-[500] text-[17px]"
-              onClick={() => setCloseOrder(true)}
-            >
-              Your Cart{" "}
-              <span className="absolute top-0 right-4 w-[24px] rounded-[5px] h-[24px] bg-[#F3C294] flex items-center justify-center text-[#000000] font-[600]">
-                {counts}
-              </span>
-            </p>
-          </div>
+              <i
+                style={{ color: isActive("/cart") ? "black" : "#BCBCBC" }}
+                onChange={() => setCloseOrder(true)}
+                className=" transition-all duration-150 ease-in-out fa-solid fa-bookmark text-[#BCBCBC] text-[20px]"
+              ></i>
+              <p
+                style={{ color: isActive("/cart") ? "black" : "#BCBCBC" }}
+                className=" transition-all w-full duration-150 relative ease-in-out text-[#BCBCBC] font-[500] text-[17px]"
+                onClick={() => setCloseOrder(true)}
+              >
+                Your Cart{" "}
+                <span className="absolute top-0 right-4 w-[24px] rounded-[5px] h-[24px] bg-[#F3C294] flex items-center justify-center text-[#000000] font-[600]">
+                  {counts}
+                </span>
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
     </>

@@ -1,76 +1,74 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import classNames from "classnames";
+import api from "../../Server/api";
 export const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [value, setValue] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [type, setType] = useState("password");
+  const [error, setError] = useState("");
   const [show, setShow] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMassage, setErrorMassage] = useState("");
   const navigate = useNavigate();
 
-  const handleShow = () => {
-    if (show === false) {
-      setType("text");
-      setShow(true);
-    } else {
-      setShow(false);
-      setType("password");
+  const handleRequest = async () => {
+    try {
+      const res = await api.post("./sign-up", value);
+      if (res.status === 201) navigate("/login");
+    } catch (err) {
     }
   };
 
-  const handleRegister = () => {
-    if (
-      name.length >= 3 &&
-      email.length >= 11 &&
-      email.endsWith("@gmail.com") &&
-      password.length >= 6
-    ) {
-      setName("");
-      setEmail("");
-      setPassword("");
-      localStorage.setItem("token", "true");
-      navigate("/home");
-    } else {
-      setError(true);
-      if (
-        name.length < 3 &&
-        email.length >= 11 &&
-        email.endsWith("@gmail.com") &&
-        password.length >= 6
-      ) {
-        setErrorMassage("Name is not valid ❗");
-      }
-      if (name.length >= 3 && email.length < 11 && password.length >= 6) {
-        setErrorMassage("Email is not valid ❗");
-      }
-      if (
-        name.length >= 3 &&
-        email.length >= 11 &&
-        !email.endsWith("@gmail.com") &&
-        password.length >= 6
-      ) {
-        setErrorMassage("Email is not valid ❗");
-      }
-      if (
-        name.length >= 3 &&
-        email.length >= 11 &&
-        email.endsWith("@gmail.com") &&
-        password.length < 6
-      ) {
-        setErrorMassage("Password is not valid ❗");
-      }
-      if (name.length < 3 && email.length < 11 && password.length < 6) {
-        setErrorMassage("All fields are not valid ❗");
-      }
+  const inputError = () => {
+    if (value.name === "" && value.email === "" && value.password === "") {
+      setError("all");
     }
+    if (value.name === "" && value.email !== "" && value.password !== "") {
+      setError("name");
+    }
+    if (
+      value.name !== "" &&
+      (value.email === "" || !value.email.includes("@")) &&
+      value.password !== ""
+    ) {
+      setError("email");
+    }
+    if (value.name !== "" && value.email !== "" && value.password === "") {
+      setError("password");
+    }
+    if (
+      value.name !== "" &&
+      value.email !== "" &&
+      value.password !== "" &&
+      value.email.includes("@")
+    ) {
+      setError("");
+      handleRequest();
+    }
+  };
+
+  const handleShow = () => {
+    if (type === "password") {
+      setType("text");
+      setShow(true);
+    }
+    if (type === "text") {
+      setType("password");
+      setShow(false);
+    }
+  };
+
+  const handleValue = (e) => {
+    const { name, value: inputValue } = e.target;
+    setValue({ ...value, [name]: inputValue });
   };
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
-      handleRegister();
+      inputError();
     }
   };
   return (
@@ -83,39 +81,61 @@ export const Register = () => {
           </p>
           <div className="flex mb-[28px] w-full mx-auto justify-center items-center flex-col gap-[28px]">
             <input
-              className="border-[2px] outline-none border-[#FBDDBB82] bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px]"
-              onChange={(e) => setName(e.target.value)}
+              className={classNames(
+                "border-[2px] transition-all ease-in-out duration-500 outline-none bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px]",
+                {
+                  "border-[#FBDDBB82]": error !== "name" || error !== "all",
+                  "border-red-600": error === "name" || error === "all",
+                }
+              )}
+              onChange={handleValue}
               onKeyDown={handleEnter}
-              value={name}
+              value={value.name}
+              name="name"
               type="text"
               placeholder="Your First Name"
             />
             <input
-              className="border-[2px] outline-none border-[#FBDDBB82] bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px]"
+              className={classNames(
+                "border-[2px] outline-none border-[#FBDDBB82] bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px] transition-all duration-500 ease-in-out",
+                {
+                  "border-[#FBDDBB82]": error !== "email" || error !== "all",
+                  "border-red-600": error === "email" || error === "all",
+                }
+              )}
               type="email"
               onKeyDown={handleEnter}
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={handleValue}
+              value={value.email}
+              name="email"
               placeholder="Your Email address"
             />
             <div className="flex mb-[22px] max-w-[488px] items-center justify-center mx-auto w-full relative">
               <input
-                className="border-[2px] outline-none border-[#FBDDBB82] bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] pr-[40px] pl-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px]"
+                className={classNames(
+                  "border-[2px] outline-none border-[#FBDDBB82] bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px] transition-all duration-500 ease-in-out",
+                  {
+                    "border-[#FBDDBB82]":
+                      error !== "password" || error !== "all",
+                    "border-red-600": error === "password" || error === "all",
+                  }
+                )}
                 type={type}
                 onKeyDown={handleEnter}
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                onChange={handleValue}
+                value={value.password}
+                name="password"
                 placeholder="Your Password"
               />
               <p
                 onClick={handleShow}
                 className="absolute font-[600] text-[14px] right-[5px] text-[#00302E] cursor-pointer"
               >
-                {show !== false && password.length !== 0 ? "hide" : "show"}
+                {show ? "hide" : "show"}
               </p>
             </div>
             <button
-              onClick={handleRegister}
+              onClick={inputError}
               className="bg-[#00302E] text-[#FBDDBB] text-[18px] font-[500] py-[19px] w-full max-w-[488px] rounded-[5px] mx-auto border-none outline-none"
             >
               Sign UP
@@ -129,22 +149,6 @@ export const Register = () => {
               </span>
             </Link>
           </p>
-        </div>
-      </div>
-      <div
-        style={{ display: error ? "flex" : "none" }}
-        className="w-full h-screen max-h-full bg-black/50 z-[-5px] absolute top-0"
-      >
-        <div className="flex w-full h-full justify-center items-center">
-          <div className="flex relative py-[20px] rounded-[5px] w-full max-w-[400px] items-center justify-center bg-white">
-            <p
-              onClick={() => setError(false)}
-              className="absolute right-[8px] cursor-pointer text-red-600 top-0 font-[700]"
-            >
-              x
-            </p>
-            <p className="text-[#00302E] font-[600]">{errorMassage}</p>
-          </div>
         </div>
       </div>
     </>
