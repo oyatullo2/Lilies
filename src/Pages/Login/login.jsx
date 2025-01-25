@@ -18,9 +18,7 @@ export const Login = () => {
       if(res.data.success === true){
         navigate("/home")
       }
-      console.log(res.data);
     } catch (err) {
-      console.log(err);
     }
   };
   const handleValue = (e) => {

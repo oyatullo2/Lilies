@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { MainProvider } from "../../Context/GlobaState";
 export const Foods = () => {
   const { mode, setMode } = useContext(MainProvider);
-
+  const token = localStorage.getItem("token");
   const handleMode = () => {
     const modeColor = localStorage.getItem("Mode");
     if (mode === "dark") {
@@ -24,31 +24,24 @@ export const Foods = () => {
               <img src="/Group 15.svg" alt="Rasm bor" />
               <p className="font-[700] text-[32px] text-[#FFFFFF]">Lilies</p>
             </div>
-            <div className="flex items-center justify-center">
-              <div
-                onClick={handleMode}
-                className="w-[25px] shadow-md shadow-white flex justify-center items-center h-[25px] bg-transparent rounded-full mr-[20px]"
-              >
-                {mode === "light" ? (
-                  <i className="fa-solid fa-moon"></i>
-                ) : (
-                  <i className="fa-solid fa-sun"></i>
-                )}
+            {token ? (
+              <Link to={"/home"}>
+                <button className="text-[#00302E] font-[600] text-[17px] bg-[#E2B887] border-none py-[10px] w-full px-[38px] rounded-[7px] outline-none">Dashboard</button>
+              </Link>
+            ) : (
+              <div className="flex items-center justify-center">
+                <Link to={"/login"}>
+                  <p className="font-[500] text-[21px] text-[#FFFFFF] mr-[45px] cursor-pointer">
+                    Login
+                  </p>
+                </Link>
+                <Link to={"/register"}>
+                  <button className="text-[#00302E] font-[600] text-[17px] bg-[#E2B887] border-none py-[10px] w-full px-[38px] rounded-[7px] outline-none">
+                    Sign Up
+                  </button>
+                </Link>
               </div>
-              <p className="font-[500] text-[21px] text-[#FBDDBB] mr-[45px] cursor-pointer">
-                Home
-              </p>
-              <Link to={"/login"}>
-                <p className="font-[500] text-[21px] text-[#FFFFFF] mr-[45px] cursor-pointer">
-                  Login
-                </p>
-              </Link>
-              <Link to={"/register"}>
-                <button className="text-[#00302E] font-[600] text-[17px] bg-[#E2B887] border-none py-[10px] w-full px-[38px] rounded-[7px] outline-none">
-                  Sign Up
-                </button>
-              </Link>
-            </div>
+            )}
           </div>
           <div className="flex w-full mb-[150px] justify-around">
             <div className="flex justify-center flex-col">
