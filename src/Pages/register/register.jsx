@@ -16,10 +16,10 @@ export const Register = () => {
 
   const handleRequest = async () => {
     try {
-      const res = await api.post("./sign-up", value);
+      const res = await api.post("/auth/sign-up", value);
       if (res.status === 201) navigate("/login");
     } catch (err) {
-    }
+n    }
   };
 
   const inputError = () => {

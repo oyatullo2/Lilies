@@ -13,7 +13,7 @@ export const Login = () => {
 
   const handleRequest = async () => {
     try {
-      const res = await api.post("./sign-in", value);
+      const res = await api.post("/auth/sign-in", value);
       localStorage.setItem("token", res.data.token);
       if(res.data.success === true){
         navigate("/home")

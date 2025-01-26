@@ -8,6 +8,7 @@ import { Order } from "./Pages/Order/order";
 import { Dashboard } from "./Pages/Dashboard/dashboard";
 import { Cart } from "./Pages/Home/Cart/cart";
 import { Profile } from "./Pages/Profile/profile";
+import { FoodBox } from "./Pages/FoodBox/foodBox";
 
 export const Router = () => {
   return (
@@ -18,9 +19,10 @@ export const Router = () => {
       <Route element={<MainRouter />}>
         <Route element={<Layouts />}>
           <Route path="/home" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile/>}></Route>
-          <Route path="/order" element={<Order/>}></Route>
-          <Route path="/cart" element={<Cart/>}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/order" element={<Order />}></Route>
+          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/foodbox/:id" element={<FoodBox />} />
         </Route>
       </Route>
     </Routes>

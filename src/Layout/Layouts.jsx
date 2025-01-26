@@ -19,7 +19,9 @@ export const Layouts = () => {
         <div className="w-full flex flex-col bg-white">
           <div
             className={classNames("w-full", {
-              "hidden" : local.pathname === '/profile'
+              hidden:
+                local.pathname === "/profile" ||
+                local.pathname.startsWith("/foodBox"),
             })}
           >
             <Home />
