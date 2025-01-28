@@ -1,120 +1,108 @@
+import { useEffect, useState } from "react";
+import api from "../../../Server/api";
+import classNames from "classnames";
+import { Link } from "react-router-dom";
+
 export const Cart = () => {
+  const [cartData, setCartData] = useState([]);
+
+  useEffect(() => {
+    const handleGetCartData = async () => {
+      const res = await api.get("/cart");
+      const itemsWithCount = res.data.items.map((item) => ({
+        ...item,
+        count: 1,
+      }));
+      setCartData(itemsWithCount);
+    };
+
+    handleGetCartData();
+  }, []);
+
+  const handleCountChange = (id, operation) => {
+    setCartData((prevData) =>
+      prevData.map((item) =>
+        item._id === id
+          ? {
+              ...item,
+              count:
+                operation === "increment" ? item.count + 1 : item.count - 1,
+            }
+          : item
+      )
+    );
+  };
+
+  const handleOrderRequest = async () => {
+    const res = await api.post("/order");
+  };
+
   return (
     <>
-      <div className="w-full max-h-[800px] overflow-y-scroll pb-[10px] max-w-[700px] mx-auto flex h-full flex-col">
-        <p className="text-[#00302E] font-[600] text-[17px] mb-[24px] mt-[50px]">
-          Your Cart
-        </p>
-        <div className="flex justify-between mb-[36px] w-full">
-          <p className="text-[#000000B0] w-full text-[13px] font-[500]">Item</p>
-          <div className="w-full flex justify-around">
-            <p className="text-[#000000B0] text-[13px] font-[500]">Qty</p>
-            <p className="text-[#000000B0] text-[13px] font-[500]">
-              Unit Price
-            </p>
-            <p className="text-[#000000B0] text-[13px] font-[500]">Sub-total</p>
-          </div>
-        </div>
-        <div className="w-full gap-[40px] flex flex-col">
-          <div className="w-full flex items-center justify-between">
-            <div className="w-full flex items-center gap-[15px]">
-              <img
-                src="/bon-vivant-qom5MPOER-I-unsplash 2.svg"
-                className="w-[70px] h-[70px]"
-                alt=""
-              />
-              <div className="flex flex-col">
-                <p className="text-[#00302E] text-[17px] font-[700]">
-                  Stir Fry Pasta
-                </p>
-                <p className="text-[#C92C33] text-[13px] font-[600]">Remove</p>
+      <div className="flex flex-col h-screen max-h-full overflow-y-scroll gap-[15px]">
+        {cartData.map((item) => (
+          <div
+            key={item._id}
+            className="w-full max-w-[1000px] mx-auto max-h-full"
+          >
+            <div className="flex border-[2px] p-[5px] hover:shadow-lg shadow-sm transition-all duration-500 ease-in-out hover:shadow-[#e9e9e9] rounded-md items-center justify-between text-[#00302E] w-full">
+              <div className="flex gap-2 items-center">
+                <img
+                  className="w-[90px] rounded-full h-[90px]"
+                  src={item.foodId.image}
+                  alt="Rasm bor"
+                />
+                <div className="flex flex-col justify-center ">
+                  <p className="font-[600] text-[18px]">{item.foodId.name}</p>
+                  <p className="font-[700] text-[#05d116b0] text-[17px]">
+                    $ {item.foodId.price}
+                  </p>
+                  <p className="font-[600] text-[15px] text-red-600">
+                    Available: {item.foodId.availableCount}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2 justify-center items-center w-full max-w-[100px]">
+                <button
+                  onClick={() => handleCountChange(item._id, "decrement")}
+                  className="border-none outline-none py-[5px] w-full max-w-[90px] bg-[#00302E] text-white font-[700] text-[22px] rounded-md flex justify-center items-center"
+                >
+                  -
+                </button>
+                <p className="font-[700] text-[20px]">{item.count}</p>
+                <button
+                  onClick={() => handleCountChange(item._id, "increment")}
+                  className="border-none outline-none py-[5px] w-full max-w-[90px] bg-[#00302E] text-white font-[700] text-[22px] rounded-md flex justify-center items-center"
+                >
+                  +
+                </button>
               </div>
             </div>
-            <div className="w-full flex justify-evenly">
-              <p className="text-[17px] font-[700] text-[#00302E]">3</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">N,1000.00</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">
-                N 3,000.00
-              </p>
-            </div>
           </div>
-          <div className="w-full flex items-center justify-between">
-            <div className="w-full flex items-center gap-[15px]">
-              <img
-                src="/bon-vivant-qom5MPOER-I-unsplash 2.svg"
-                className="w-[70px] h-[70px]"
-                alt=""
-              />
-              <div className="flex flex-col">
-                <p className="text-[#00302E] text-[17px] font-[700]">
-                  Stir Fry Pasta
-                </p>
-                <p className="text-[#C92C33] text-[13px] font-[600]">Remove</p>
-              </div>
-            </div>
-            <div className="w-full flex justify-evenly">
-              <p className="text-[17px] font-[700] text-[#00302E]">3</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">N,1000.00</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">
-                N 3,000.00
-              </p>
-            </div>
-          </div>
-          <div className="w-full flex items-center justify-between">
-            <div className="w-full flex items-center gap-[15px]">
-              <img
-                src="/bon-vivant-qom5MPOER-I-unsplash 2.svg"
-                className="w-[70px] h-[70px]"
-                alt=""
-              />
-              <div className="flex flex-col">
-                <p className="text-[#00302E] text-[17px] font-[700]">
-                  Stir Fry Pasta
-                </p>
-                <p className="text-[#C92C33] text-[13px] font-[600]">Remove</p>
-              </div>
-            </div>
-            <div className="w-full flex justify-evenly">
-              <p className="text-[17px] font-[700] text-[#00302E]">3</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">N,1000.00</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">
-                N 3,000.00
-              </p>
-            </div>
-          </div>
-          <div className="w-full flex items-center justify-between">
-            <div className="w-full flex items-center gap-[15px]">
-              <img
-                src="/bon-vivant-qom5MPOER-I-unsplash 2.svg"
-                className="w-[70px] h-[70px]"
-                alt=""
-              />
-              <div className="flex flex-col">
-                <p className="text-[#00302E] text-[17px] font-[700]">
-                  Stir Fry Pasta
-                </p>
-                <p className="text-[#C92C33] text-[13px] font-[600]">Remove</p>
-              </div>
-            </div>
-            <div className="w-full flex justify-evenly">
-              <p className="text-[17px] font-[700] text-[#00302E]">3</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">N,1000.00</p>
-              <p className="text-[17px] font-[700] text-[#00302E]">
-                N 3,000.00
-              </p>
-            </div>
-          </div>
-          <p className="text-[#000000B0] text-end mr-[40px] text-[17px] font-[600]">
-            Total:{" "}
-            <span className="text-[#00302E] text-[21px] font-[700]">
-              N 30,000.00
-            </span>
-          </p>
-          <button className="bg-[#00302E] text-[#F3C294] font-[700] text-[13px] mt-[-30px] border-none py-[17px] w-full max-w-[479px] flex justify-center items-center mx-auto">
-            Checkout
+        ))}
+        <Link to={"/order"}>
+          <button
+            onClick={handleOrderRequest}
+            className={classNames(
+              "text-white mx-auto font-[600] text-[17px] hover:shadow-md w-full bg-[#00302E] border-none py-[10px] max-w-[300px] mb-[10px] rounded-[5px]",
+              {
+                hidden: cartData.length === 0,
+                block: cartData.length > 0,
+              }
+            )}
+          >
+            Make Order
           </button>
-        </div>
+        </Link>
       </div>
+      <p
+        className={classNames(
+          "text-[#00302E] text-[20px] w-full h-screen font-[600] text-center",
+          { hidden: cartData.length > 0, block: cartData.length === 0 }
+        )}
+      >
+        No Cart Items !
+      </p>
     </>
   );
 };

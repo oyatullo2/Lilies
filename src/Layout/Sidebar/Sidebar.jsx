@@ -81,9 +81,6 @@ export const Sidebar = () => {
                 onClick={() => setCloseCart(true)}
               >
                 Orders
-                <span className="absolute top-0 right-4 w-[24px] rounded-[5px] h-[24px] bg-[#06E775] flex items-center justify-center text-[#000000] font-[600]">
-                  6
-                </span>
               </p>
             </div>
           </Link>
@@ -105,9 +102,6 @@ export const Sidebar = () => {
                 onClick={() => setCloseOrder(true)}
               >
                 Your Cart{" "}
-                <span className="absolute top-0 right-4 w-[24px] rounded-[5px] h-[24px] bg-[#F3C294] flex items-center justify-center text-[#000000] font-[600]">
-                  {counts}
-                </span>
               </p>
             </div>
           </Link>
