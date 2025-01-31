@@ -16,7 +16,7 @@ export const Order = () => {
     };
 
     handleOrder();
-  }, [datas]);
+  }, []);
   return (
     <>
       <div className="w-full h-screen px-[10px] overflow-y-scroll gap-[15px] flex flex-col max-h-full">
