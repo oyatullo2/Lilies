@@ -3,6 +3,7 @@ import { useState } from "react";
 import api from "../../Server/api";
 import { useEffect } from "react";
 import classNames from "classnames";
+import { ThreeDot } from "react-loading-indicators";
 export const FoodBox = () => {
   const { id } = useParams();
   const [foodBox, setFoodBox] = useState({});
@@ -57,7 +58,7 @@ export const FoodBox = () => {
           }
         )}
       >
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <ThreeDot variant="bounce" color="#32cd32" size="medium" text="" textColor="" />
       </div>
     </>
   );
