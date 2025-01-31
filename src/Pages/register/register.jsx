@@ -20,7 +20,9 @@ export const Register = () => {
   const handleRequest = async () => {
     try {
       const res = await api.post("/auth/sign-up", value);
-      if (res.status === 201) navigate("/login");
+      if (res.status === 201) {
+        navigate("/login");
+      }
     } catch (err) {
       setIsLoading(false);
       setInputBorderErr(true);
@@ -180,7 +182,7 @@ export const Register = () => {
               onClick={inputError}
               className="bg-[#00302E] text-[#FBDDBB] text-[18px] font-[500] py-[19px] w-full max-w-[488px] rounded-[5px] mx-auto border-none outline-none"
             >
-              Sign UP
+              {isLoading ? "Signing up..." : "SIGN UP"}
             </button>
           </div>
           <p className="text-[#00302E] text-[14px] font-[400]">
