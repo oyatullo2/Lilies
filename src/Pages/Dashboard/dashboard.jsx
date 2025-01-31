@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../Server/api";
 import { Link } from "react-router-dom";
+import { ThreeDot } from "react-loading-indicators";
 export const Dashboard = () => {
   const [foodsData, setFoodsData] = useState([]);
 
@@ -63,9 +64,13 @@ export const Dashboard = () => {
             </Link>
           ))
         ) : (
-          <div className="flex items-center justify-center w-full h-screen max-h-full bg-white">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          </div>
+          <ThreeDot
+            variant="bounce"
+            color="#32cd32"
+            size="medium"
+            text=""
+            textColor=""
+          />
         )}
       </div>
     </>

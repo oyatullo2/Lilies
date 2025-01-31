@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../Server/api";
+import { ThreeDot } from "react-loading-indicators";
 
 export const Order = () => {
   const [datas, setDatas] = useState([]);
@@ -15,7 +16,7 @@ export const Order = () => {
     };
 
     handleOrder();
-  }, []);
+  }, [datas]);
   return (
     <>
       <div className="w-full h-screen px-[10px] overflow-y-scroll gap-[15px] flex flex-col max-h-full">
@@ -33,18 +34,33 @@ export const Order = () => {
                   User ID: {item.userId}
                 </p>
                 <p className="text-[16px] font-[600] text-[#37df61]">
-                  Amout: ${item.totalAmount}
+                  Amout:{" "}
+                  {Number(item.totalAmount).toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                    currencySign: "standard",
+                  })}
                 </p>
-                <p className="text-[16px] font-[600] text-[#7b6565]">Created At: {new Date(item.createdAt).toLocaleString()}</p>
+                <p className="text-[16px] font-[600] text-[#7b6565]">
+                  Created At: {new Date(item.createdAt).toLocaleString()}
+                </p>
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-[16px] font-[600] text-[#37df61]">Status: {item.status}</p>
+                <p className="text-[16px] font-[600] text-[#37df61]">
+                  Status: {item.status}
+                </p>
               </div>
             </div>
           ))
         ) : (
-          <div className="flex items-center justify-center w-full h-screen max-h-[400px] bg-white">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-full h-screen flex max-h-full justify-center items-center">
+            <ThreeDot
+              variant="bounce"
+              color="#32cd32"
+              size="medium"
+              text=""
+              textColor=""
+            />
           </div>
         )}
       </div>

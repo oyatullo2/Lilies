@@ -26,7 +26,11 @@ export const Cart = () => {
           ? {
               ...item,
               count:
-                operation === "increment" ? item.count + 1 : item.count - 1,
+                operation === "increment"
+                  ? item.count + 1
+                  : item.count > 1
+                  ? item.count - 1
+                  : 1,
             }
           : item
       )
@@ -95,14 +99,14 @@ export const Cart = () => {
           </button>
         </Link>
       </div>
-      <p
+      <div
         className={classNames(
           "text-[#00302E] text-[20px] w-full h-screen font-[600] text-center",
           { hidden: cartData.length > 0, block: cartData.length === 0 }
         )}
       >
         No Cart Items !
-      </p>
+      </div>
     </>
   );
 };

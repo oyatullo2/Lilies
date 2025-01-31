@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
+import { ThreeDot } from "react-loading-indicators";
 import api from "../../Server/api";
 export const Register = () => {
   const [value, setValue] = useState({
@@ -12,6 +13,8 @@ export const Register = () => {
   const [type, setType] = useState("password");
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [inputBorderErr, setInputBorderErr] = useState(false);
   const navigate = useNavigate();
 
   const handleRequest = async () => {
@@ -19,7 +22,10 @@ export const Register = () => {
       const res = await api.post("/auth/sign-up", value);
       if (res.status === 201) navigate("/login");
     } catch (err) {
-n    }
+      setIsLoading(false);
+      setInputBorderErr(true);
+      console.log(err);
+    }
   };
 
   const inputError = () => {
@@ -46,6 +52,7 @@ n    }
       value.email.includes("@")
     ) {
       setError("");
+      setIsLoading(true);
       handleRequest();
     }
   };
@@ -71,6 +78,24 @@ n    }
       inputError();
     }
   };
+
+  if (isLoading === true) {
+    return (
+      <div className="w-full flex-col gap-4 h-screen max-h-full bg-white flex justify-center items-center">
+        <ThreeDot
+          variant="bounce"
+          color="#32cd32"
+          size="medium"
+          text=""
+          textColor=""
+        />
+        <p className="text-[#32cd32] text-[20px] font-[600] text-center">
+          Authentication in progress ...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex w-full h-screen max-h-full bg-white">
@@ -84,8 +109,14 @@ n    }
               className={classNames(
                 "border-[2px] transition-all ease-in-out duration-500 outline-none bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px]",
                 {
-                  "border-[#FBDDBB82]": error !== "name" || error !== "all",
-                  "border-red-600": error === "name" || error === "all",
+                  "border-[#FBDDBB82]":
+                    error !== "name" ||
+                    error !== "all" ||
+                    inputBorderErr !== true,
+                  "border-red-600":
+                    error === "name" ||
+                    error === "all" ||
+                    inputBorderErr === true,
                 }
               )}
               onChange={handleValue}
@@ -99,8 +130,14 @@ n    }
               className={classNames(
                 "border-[2px] outline-none border-[#FBDDBB82] bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px] transition-all duration-500 ease-in-out",
                 {
-                  "border-[#FBDDBB82]": error !== "email" || error !== "all",
-                  "border-red-600": error === "email" || error === "all",
+                  "border-[#FBDDBB82]":
+                    error !== "email" ||
+                    error !== "all" ||
+                    inputBorderErr !== true,
+                  "border-red-600":
+                    error === "email" ||
+                    error === "all" ||
+                    inputBorderErr === true,
                 }
               )}
               type="email"
@@ -116,8 +153,13 @@ n    }
                   "border-[2px] outline-none border-[#FBDDBB82] bg-transparent text-[#00302E] font-[600] text-[14px] py-[19px] px-[25px] w-full max-w-[488px] placeholder:text-[#00302E87] placeholder:font-[400] rounded-[5px] transition-all duration-500 ease-in-out",
                   {
                     "border-[#FBDDBB82]":
-                      error !== "password" || error !== "all",
-                    "border-red-600": error === "password" || error === "all",
+                      error !== "password" ||
+                      error !== "all" ||
+                      inputBorderErr !== true,
+                    "border-red-600":
+                      error === "password" ||
+                      error === "all" ||
+                      inputBorderErr === true,
                   }
                 )}
                 type={type}
