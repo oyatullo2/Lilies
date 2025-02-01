@@ -4,24 +4,50 @@ import { ThreeDot } from "react-loading-indicators";
 
 export const Order = () => {
   const [datas, setDatas] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const handleOrder = async () => {
       try {
+        setIsLoading(true);
         const res = await api.get("/orders");
         const data = await res.data.orders;
         setDatas(data);
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     handleOrder();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center max-h-full">
+        <ThreeDot
+          variant="bounce"
+          color="#32cd32"
+          size="medium"
+          text=""
+          textColor=""
+        />
+      </div>
+    );
+  }
+
+  if(datas.length === 0 && !isLoading){
+    return (
+      <div className="w-full h-screen flex items-center justify-center max-h-full">
+        <p className="text-[#00302E] text-[18px] font-[600]">No Order Items !</p>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="w-full h-screen px-[10px] overflow-y-scroll gap-[15px] flex flex-col max-h-full">
-        {datas.length > 0 ? (
-          datas.map((item) => (
+          {datas.map((item) => (
             <div
               key={item._id}
               className="w-full border-[2px] p-[5px] rounded-md border-gray-100 flex items-center justify-between text-[#00302E] shadow-sm hover:shadow-md transition-all duration-500 ease-in-out"
@@ -52,17 +78,7 @@ export const Order = () => {
               </div>
             </div>
           ))
-        ) : (
-          <div className="w-full h-screen flex max-h-full justify-center items-center">
-            <ThreeDot
-              variant="bounce"
-              color="#32cd32"
-              size="medium"
-              text=""
-              textColor=""
-            />
-          </div>
-        )}
+        }
       </div>
     </>
   );

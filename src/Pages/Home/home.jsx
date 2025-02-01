@@ -1,8 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MainProvider } from "../../Context/GlobaState";
 import { Outlet } from "react-router-dom";
+import api from "../../Server/api";
 export const Home = () => {
   const { sideBarMode, setSideBarMode } = useContext(MainProvider);
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const handleGetUsername = async () => {
+      const res = await api.get("/auth/profile");
+      const data = await res.data.user;
+      setName(data.name);
+    };
+    handleGetUsername();
+  }, []);
 
   const handleShowSidebar = () => {
     if (sideBarMode === false) {
@@ -12,6 +23,7 @@ export const Home = () => {
       setSideBarMode(false);
     }
   };
+
   return (
     <>
       <div className="w-full relative animate-[HomeRightAnimation_1s_ease-out] transition-all duration-150 ease-in-out overflow-x-hidden h-screen max-h-full flex">
@@ -23,7 +35,7 @@ export const Home = () => {
           <div className="w-full mb-[50px]  mt-[70px] px-[50px] items-center mx-auto justify-between flex">
             <div className="flex flex-col justify-start">
               <p className="text-[23px] font-[700] text-[#00302E]">
-                Good morning, Oghenevwede!
+                Good morning, {name}!
               </p>
               <p className="font-[500] text-[14px] text-[#000000B0]">
                 What delicious meal are you craving today?

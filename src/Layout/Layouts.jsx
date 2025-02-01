@@ -11,8 +11,12 @@ export const Layouts = () => {
     <>
       <div className="flex w-full overflow-x-hidden h-screen max-h-full">
         <div
-          style={{ display: sideBarMode ? "block" : "none" }}
-          className="transition-all duration-500 ease-in-out w-full max-w-[320px] bg-[#FBFBFB]"
+          className={classNames("transition-all duration-500 ease-in-out w-full max-w-[320px] bg-[#FBFBFB]",
+            {
+              'hidden' : local.pathname === '/setting' || sideBarMode === false,
+              'block' : local.pathname !== '/setting' && sideBarMode === true
+            }
+          )}
         >
           <Sidebar />
         </div>
@@ -21,7 +25,8 @@ export const Layouts = () => {
             className={classNames("w-full", {
               hidden:
                 local.pathname === "/profile" ||
-                local.pathname.startsWith("/foodBox"),
+                local.pathname.startsWith("/foodBox") ||
+                local.pathname === "/setting",
             })}
           >
             <Home />

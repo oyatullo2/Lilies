@@ -31,7 +31,17 @@ export default {
             transform: "translateX(0%)",
             opacity: 1,
           },
-        }
+        },
+      },
+    },
+    keyframes: {
+      OpacityAnimation: {
+        "0%": {
+          opacity: 0,
+        },
+        "100%": {
+          opacity: 1,
+        },
       },
     },
   },

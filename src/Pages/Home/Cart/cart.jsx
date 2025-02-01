@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import api from "../../../Server/api";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
-
+import { ThreeDot } from "react-loading-indicators";
+import { useNavigate } from "react-router-dom";
 export const Cart = () => {
   const [cartData, setCartData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate("");
 
   useEffect(() => {
     const handleGetCartData = async () => {
-      const res = await api.get("/cart");
-      const itemsWithCount = res.data.items.map((item) => ({
-        ...item,
-        count: 1,
-      }));
-      setCartData(itemsWithCount);
+      try {
+        setIsLoading(true);
+        const res = await api.get("/cart");
+        const itemsWithCount = res.data.items;
+        setCartData(itemsWithCount);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     handleGetCartData();
@@ -39,7 +45,32 @@ export const Cart = () => {
 
   const handleOrderRequest = async () => {
     const res = await api.post("/order");
+    if (res.status === 201) {
+      navigate("/order");
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex w-full items-center justify-center h-screen max-h-full">
+        <ThreeDot
+          variant="bounce"
+          color="#32cd32"
+          size="medium"
+          text=""
+          textColor=""
+        />
+      </div>
+    );
+  }
+
+  if (cartData.length === 0 && !isLoading) {
+    return (
+      <div className="flex w-full items-center justify-center h-screen max-h-full">
+        <p className="font-[600] text-[20px] text-[#00302E]">Cart is empty !</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -84,28 +115,18 @@ export const Cart = () => {
             </div>
           </div>
         ))}
-        <Link to={"/order"}>
-          <button
-            onClick={handleOrderRequest}
-            className={classNames(
-              "text-white mx-auto font-[600] text-[17px] hover:shadow-md w-full bg-[#00302E] border-none py-[10px] max-w-[300px] mb-[10px] rounded-[5px]",
-              {
-                hidden: cartData.length === 0,
-                block: cartData.length > 0,
-              }
-            )}
-          >
-            Make Order
-          </button>
-        </Link>
-      </div>
-      <div
-        className={classNames(
-          "text-[#00302E] text-[20px] w-full h-screen font-[600] text-center",
-          { hidden: cartData.length > 0, block: cartData.length === 0 }
-        )}
-      >
-        No Cart Items !
+        <button
+          onClick={handleOrderRequest}
+          className={classNames(
+            "text-white mx-auto font-[600] text-[17px] hover:shadow-md w-full bg-[#00302E] border-none py-[10px] max-w-[300px] mb-[10px] rounded-[5px]",
+            {
+              hidden: cartData.length === 0,
+              block: cartData.length > 0,
+            }
+          )}
+        >
+          Make Order
+        </button>
       </div>
     </>
   );
