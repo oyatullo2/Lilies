@@ -48,7 +48,6 @@ export const Setting = () => {
         navigate("/login");
       }
       localStorage.removeItem("token");
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
