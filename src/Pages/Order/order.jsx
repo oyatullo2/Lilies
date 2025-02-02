@@ -94,7 +94,7 @@ export const Order = () => {
             </p>
             <div
               className={classNames(
-                "w-full gap-5 duration-500 ease-in-out transition-all max-w-[720px] flex flex-wrap justify-start items-center",
+                "w-full gap-5 duration-500 ease-in-out transition-all max-w-[720px] flex flex-wrap justify-start items-start",
                 {
                   hidden: !orderShow[item._id],
                 }
@@ -106,7 +106,7 @@ export const Order = () => {
                   className="flex transition-all duration-500 ease-in-out flex-col items-center justify-center"
                 >
                   <img
-                    className="w-[66px] mb-[5px] rounded-full h-[60px] object-fill"
+                    className="w-[70px] mb-[5px] rounded-full h-[70px] object-fill"
                     src={food.foodId.image}
                     alt="Rasm bor"
                   />
